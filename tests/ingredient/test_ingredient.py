@@ -6,6 +6,7 @@ def test_ingredient():
     queijo = Ingredient('queijo provolone')
 
     assert queijo.name == 'queijo provolone'
+    assert queijo == Ingredient('queijo provolone')
 
     assert hash(queijo) == hash('queijo provolone')
 
