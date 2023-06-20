@@ -5,22 +5,32 @@ from src.models.ingredient import Ingredient, Restriction
 
 # Req 2
 def test_dish():
-    risotoSalmão = Dish('risoto de salmão', 67.90)
+    risotoSalmao = Dish("risoto de salmão", 67.90)
+    risotoCamarao = Dish("risoto de camarão", 70.00)
+
+    assert risotoSalmao.name == "risoto de salmão"
+    assert risotoSalmao.price == 67.90
+    assert risotoSalmao.recipe == {}
 
     with pytest.raises(TypeError):
-        Dish('risoto de salmão', 'a')
+        Dish("risoto de salmão", "89.65")
 
     with pytest.raises(ValueError):
-        Dish('risoto de salmão', -9)
+        Dish("risoto de salmão", -89.65)
 
-    assert risotoSalmão.name == 'risoto de salmão'
-    assert risotoSalmão.price == 67.90
-    assert risotoSalmão == Dish('risoto de salmão', 67.90)
-    assert hash(risotoSalmão) == hash('risoto de salmão')
-    assert repr(risotoSalmão) == "Dish('risoto de salmão', R$67.90)"
+    assert hash(risotoSalmao) == hash(risotoSalmao)
+    assert hash(risotoSalmao) != hash(risotoCamarao)
+    assert repr(risotoSalmao) == "Dish('risoto de salmão', R$67.90)"
+    assert repr(risotoSalmao) != "Dish('risoto de camarão', R$70.00)"
 
-    risotoSalmão.add_ingredient_dependency(Ingredient('salmão'), 1)
-    assert risotoSalmão.get_ingredients() == {Ingredient('salmão')}
-    assert risotoSalmão.get_restrictions() == {Restriction.ANIMAL_MEAT,
-                                               Restriction.SEAFOOD,
-                                               Restriction.ANIMAL_DERIVED}
+    assert risotoSalmao.get_ingredients() == set()
+    assert risotoSalmao == Dish("risoto de salmão", 67.90)
+    assert risotoSalmao != Dish("risoto de camarão", 70.00)
+
+    risotoSalmao.add_ingredient_dependency(Ingredient("salmão"), 1)
+    assert risotoSalmao.get_restrictions() == {
+        Restriction.ANIMAL_MEAT,
+        Restriction.SEAFOOD,
+        Restriction.ANIMAL_DERIVED,
+    }
+    assert risotoSalmao.get_ingredients() == {Ingredient("salmão")}
